@@ -1,0 +1,88 @@
+﻿[
+{
+  "model": "accounts.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$720000$562j2o3rnkT7Oeb2W6nfHh$4YyDS64QGSCcmuWr37S2BZ+AIuz+W3tziULGWhJzMe4=",
+    "last_login": "2025-03-09T19:06:24.097Z",
+    "is_superuser": false,
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-03-09T19:06:09.023Z",
+    "username": "SAM",
+    "role": "patient",
+    "email": "",
+    "first_name": "SAM",
+    "last_name": "THUMI",
+    "registration_number": null,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "pk": 2,
+  "fields": {
+    "password": "pbkdf2_sha256$720000$k24x1FIVy0hMegPTyhHn5B$1V97Iqq08Lx+4hzuLL8lIWyEsrID80X9rKhsmyL61dg=",
+    "last_login": null,
+    "is_superuser": true,
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2025-03-09T19:09:13.295Z",
+    "username": "dotie",
+    "role": "patient",
+    "email": "",
+    "first_name": "",
+    "last_name": "",
+    "registration_number": null,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.profile",
+  "pk": 1,
+  "fields": {
+    "user": 1,
+    "avatar": "defaults/user.png",
+    "phone": null,
+    "dob": null,
+    "about": null,
+    "specialization": null,
+    "gender": "",
+    "address": null,
+    "city": "",
+    "state": "",
+    "postal_code": "",
+    "country": "",
+    "price_per_consultation": null,
+    "is_available": true,
+    "blood_group": null,
+    "allergies": null,
+    "medical_conditions": null
+  }
+},
+{
+  "model": "accounts.profile",
+  "pk": 2,
+  "fields": {
+    "user": 2,
+    "avatar": "defaults/user.png",
+    "phone": null,
+    "dob": null,
+    "about": null,
+    "specialization": null,
+    "gender": "",
+    "address": null,
+    "city": "",
+    "state": "",
+    "postal_code": "",
+    "country": "",
+    "price_per_consultation": null,
+    "is_available": true,
+    "blood_group": null,
+    "allergies": null,
+    "medical_conditions": null
+  }
+}
+]

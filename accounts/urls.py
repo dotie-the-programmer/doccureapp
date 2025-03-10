@@ -22,4 +22,7 @@ urlpatterns = [
         UpdateBasicUserInformationAPIView.as_view(),
         name="update-basic-information",
     ),
+    # Added doctor login URL pattern
+    path("doctor/login/", LoginView.as_view(), name="doctor_login"),  # Adjust this view if needed
 ]
+

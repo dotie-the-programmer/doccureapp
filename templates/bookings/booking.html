@@ -146,17 +146,17 @@ document.addEventListener('DOMContentLoaded', function() {
     timingSlots.forEach(slot => {
         slot.addEventListener('click', function(e) {
             e.preventDefault();
-            
+
             // Remove selected class from all slots
             timingSlots.forEach(s => s.classList.remove('selected'));
-            
+
             // Add selected class to clicked slot
             this.classList.add('selected');
-            
+
             // Update hidden inputs
             selectedDateInput.value = this.dataset.date;
             selectedTimeInput.value = this.dataset.time;
-            
+
             // Enable submit button
             submitBtn.disabled = false;
         });

@@ -4,6 +4,7 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
+
 from accounts.views.admin_views import (
     AdminDashboardView,
     AdminPatientsView,
@@ -25,7 +26,8 @@ admin.site.index_title = "Welcome to Doccure Admin Portal"
 
 
 urlpatterns = (
-    [
+
+[
         path("super-admin/", admin.site.urls),
         path("accounts/", include("accounts.urls")),
         path("patients/", include("patients.urls")),

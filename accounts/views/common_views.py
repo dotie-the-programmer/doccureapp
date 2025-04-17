@@ -1,10 +1,44 @@
+import json
+from base64 import b64encode
+from datetime import datetime
+
 from django.contrib import messages, auth
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponseRedirect
+from django.contrib.sites import requests
+from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import CreateView, FormView, RedirectView, UpdateView
 from rest_framework.generics import UpdateAPIView
+
+from django.contrib.auth.views import PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, \
+    PasswordResetCompleteView
+from django.urls import reverse_lazy
+
+from doccure import settings
+
+
+class CustomPasswordResetView(PasswordResetView):
+    template_name = "auth/password_reset.html"
+    email_template_name = "auth/password_reset_email.html"
+    subject_template_name = "auth/password_reset_subject.txt"
+    success_url = reverse_lazy("password_reset_done")
+
+
+class CustomPasswordResetDoneView(PasswordResetDoneView):
+    template_name = "auth/password_reset_done.html"
+
+
+class CustomPasswordResetConfirmView(PasswordResetConfirmView):
+    template_name = "auth/password_reset_confirm.html"
+    success_url = reverse_lazy("password_reset_complete")
+
+
+class CustomPasswordResetCompleteView(PasswordResetCompleteView):
+    template_name = "auth/password_reset_complete.html"
+
 
 from accounts.forms import (
     DoctorRegistrationForm,
@@ -149,3 +183,8 @@ class UpdateBasicUserInformationAPIView(LoginRequiredMixin, UpdateAPIView):
             )
         except Exception as e:
             return render_toast_message_for_api("Error", str(e), "error")
+
+
+
+
+

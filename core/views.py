@@ -20,3 +20,6 @@ class TermsView(TemplateView):
 
 class PrivacyView(TemplateView):
     template_name = "core/privacy.html"
+
+
+

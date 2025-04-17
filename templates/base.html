@@ -95,6 +95,33 @@
 
 {% block scripts %}{% endblock %}
 
+<script src="https://cdn.jsdelivr.net/npm/rasa-webchat@1.0.1/lib/index.js"></script>
+
+
+
+<script>
+  !(function () {
+    let e = document.createElement("script"),
+      t = document.head || document.getElementsByTagName("head")[0];
+    (e.src = "https://cdn.jsdelivr.net/npm/rasa-webchat@1.0.1/lib/index.js"),
+      (e.async = !0),
+      (e.onload = () => {
+        window.WebChat.default.init({
+          selector: "#webchat",
+          initPayload: "/get_started",
+          customData: { language: "en" },
+          socketUrl: "http://127.0.0.1:5005",
+          title: "Your Chatbot",
+          subtitle: "Available 24/7",
+        });
+      }),
+      t.insertBefore(e, t.firstChild);
+  })();
+</script>
+
+<!-- This is the div where the chat widget will be rendered -->
+<div id="webchat"></div>
+
 </body>
 
 </html>

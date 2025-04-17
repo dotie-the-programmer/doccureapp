@@ -1,4 +1,4 @@
-# DocCure - Healthcare Appointment System
+ # DocCure - Healthcare Appointment System
 
 DocCure is a modern healthcare appointment booking system that connects patients with doctors. The platform streamlines the process of finding doctors, booking appointments, and managing medical consultations.
 
@@ -78,8 +78,8 @@ Live: [Demo](http://doccure.manjurulhoque.com/en/)
 1. Clone the repository
 
 bash
-git clone https://github.com/manjurulhoque/doccure.git
-cd doccure
+git clone https://github.com/dotie-the-programmer/doccureapp.git
+cd docker
 
 2. Create a virtual environment
 ```bash
@@ -128,11 +128,11 @@ After loading fixtures, you can use these demo accounts:
 
 **Doctor Account:**
 - Username: doctor1
-- Password: Abcdefgh.1
+- Password: 
 
 **Patient Account:**
 - Username: patient1
-- Password: Abcdefgh.1
+- Password: 
 
 ## Contributing
 1. Fork the repository
@@ -183,7 +183,7 @@ For support, email support@doccure.com or create an issue in the repository.
 
 ## Conclusion
 
-DocCure aims to modernize healthcare access in Bangladesh by:
+DocCure aims to modernize healthcare access in kenya by:
 
 1. **Simplified Booking**: Making it easy for patients to find and book appointments with qualified doctors
 2. **Digital Management**: Helping doctors manage their practice more efficiently
@@ -206,7 +206,7 @@ DocCure aims to modernize healthcare access in Bangladesh by:
 
 ### Project Status
 
-This project is actively maintained and open for contributions. Core features are implemented including the new reporting system, but we welcome improvements and new feature additions from the community.
+This project is actively maintained and open for contributions. Core features are implemented including the new reporting system, but i welcome improvements and new feature additions from the community.
 
 ---
 Built with ❤️ for better healthcare access

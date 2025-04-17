@@ -22,7 +22,7 @@
                             </div>
                             <div class="col-md-12 col-lg-6 login-right">
                                 <div class="login-header">
-                                    <h3>Login <span>DocCure</span></h3>
+                                    <h3>Login <span>SMART CARE CENTER</span></h3>
                                 </div>
 
                                 {% if form.errors %}
@@ -65,7 +65,11 @@
                                         {% endfor %}
                                     {% endif %}
                                     <div class="text-right">
-                                        <a class="forgot-link" href="#">Forgot Password?</a>
+                                        <a href="{% url 'accounts:password_reset' %}">Forgot Password?</a>
+
+
+
+
                                     </div>
                                     <button class="btn btn-primary btn-block btn-lg login-btn" type="submit">Login</button>
                                     <div class="login-or">

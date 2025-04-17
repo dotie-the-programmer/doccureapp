@@ -131,3 +131,23 @@ CKEDITOR_CONFIGS = {
 }
 
 CKEDITOR_BASEPATH = "/static/ckeditor/ckeditor/"
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'dorothycherono951@gmail.com'  # Replace with your email
+EMAIL_HOST_PASSWORD = 'mwlu wxiy kdrn yvpi'  # Use an App Password if using Gmail
+
+# M-Pesa Daraja Sandbox Settings
+MPESA_CONSUMER_KEY = 'zQk3fcF1GvyXFkQ7AfyIVf8jg23EWtda7kUDzOWrWhSzpcpl'
+MPESA_CONSUMER_SECRET = 'cJzY1owxRY0bcF8LVuCK72Ia7jeF9GPgKu7LsiMnDhGlWhlrKHmGqAhV0WAIeb5q'
+MPESA_SHORTCODE = '174379'
+MPESA_PASSKEY = 'bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919'  # Sandbox passkey
+MPESA_BASE_URL = 'https://sandbox.safaricom.co.ke'
+MPESA_CALLBACK_URL = 'https://yourdomain.com/payment/callback/'  # use ngrok or actual host
+
+
+
+
+

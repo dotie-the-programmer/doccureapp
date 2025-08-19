@@ -2,7 +2,6 @@
 
 DocCure is a modern healthcare appointment booking system that connects patients with doctors. The platform streamlines the process of finding doctors, booking appointments, and managing medical consultations.
 
-Live: [Demo](http://doccure.manjurulhoque.com/en/)
 
 ## Features
 
@@ -128,11 +127,11 @@ After loading fixtures, you can use these demo accounts:
 
 **Doctor Account:**
 - Username: doctor1
-- Password: 
+- Password: 1111
 
 **Patient Account:**
-- Username: patient1
-- Password: 
+- Username: mmemo
+- Password: 5555
 
 ## Contributing
 1. Fork the repository

@@ -1,7 +1,17 @@
+import json
+from django.urls import reverse
 from datetime import datetime, timedelta
+from bookings.utils import process_callback
+from django.http import JsonResponse
+from django.views.decorators.http import require_GET
+from django.http import JsonResponse
+
+
+from importlib import metadata
+from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import View
-from django.http import HttpRequest, Http404
+from django.http import HttpRequest, Http404, JsonResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.views.generic.base import TemplateView
@@ -9,7 +19,7 @@ from django.views.generic.base import TemplateView
 from accounts.models import User
 from doctors.models.general import TimeRange
 from mixins.custom_mixins import PatientRequiredMixin
-from .models import Booking
+from .models import Booking, Payment
 
 
 class BookingView(LoginRequiredMixin, View):
@@ -146,8 +156,9 @@ class BookingCreateView(LoginRequiredMixin, View):
                 appointment_time=appointment_time,
             )
 
-            messages.success(request, "Appointment booked successfully!")
-            return redirect("bookings:booking-success", booking_id=booking.id)
+            # Redirect to payment page instead
+            return redirect("bookings:booking-payment", booking_id=booking.id)
+
 
         except ValueError:
             messages.error(request, "Invalid date or time format")
@@ -196,3 +207,158 @@ class BookingInvoiceView(LoginRequiredMixin, TemplateView):
         )
 
         return context
+
+class BookingPaymentView(LoginRequiredMixin, View):
+    template_name = "bookings/booking-payment.html"
+
+    def get(self, request, booking_id):
+        booking = get_object_or_404(Booking, id=booking_id)
+
+        context = {
+            "booking": booking,
+            "phone": getattr(request.user, "phone_number", ""),
+            "amount": booking.doctor.profile.price_per_consultation,
+        }
+        return render(request, self.template_name, context)
+
+    def post(self, request, booking_id):
+        booking = get_object_or_404(Booking, id=booking_id)
+        phone = request.POST.get("phone")
+        amount = 1  # test amount
+
+        from bookings.credentials import MpesaAccessToken, LipanaMpesaPpassword
+        import requests, json
+
+        access_token = MpesaAccessToken.generate_access_token()
+        decode_password, lipa_time = LipanaMpesaPpassword.generate_password()
+
+        api_url = "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest"
+        headers = {"Authorization": f"Bearer {access_token}", "Content-Type": "application/json"}
+        call_back_url = f"https://8f8264a36109.ngrok-free.app/bookings/mpesa/callback/"
+        payload = {
+            "BusinessShortCode": LipanaMpesaPpassword.Business_short_code,
+            "Password": decode_password,
+            "Timestamp": lipa_time,
+            "TransactionType": "CustomerPayBillOnline",
+            "Amount": int(float(amount)),
+            "PartyA": phone,
+            "PartyB": LipanaMpesaPpassword.Business_short_code,
+            "PhoneNumber": phone,
+            "CallBackURL": call_back_url,
+            "AccountReference": "Doccure",
+            "TransactionDesc": "Doctor Appointment",
+        }
+
+        response = requests.post(api_url, json=payload, headers=headers)
+        try:
+            data = response.json()
+            if data.get("ResponseCode") == "0":
+                payment = Payment.objects.create(
+                    booking=booking,
+                    status="pending",
+                    phone_number=phone,
+                    amount=amount,
+                    checkout_id=data["CheckoutRequestID"],
+                )
+
+                # ✅ If AJAX → return JSON
+                if request.headers.get("x-requested-with") == "XMLHttpRequest":
+                    return JsonResponse({
+                        "status": "pending",
+                        "payment_id": payment.id,
+                        "message": "prompt sent! please Check your phone."
+                    })
+
+                # ✅ Otherwise → normal Django flow
+                messages.success(request, "✅ Your number has been propmted,please make payment.")
+                return redirect("bookings:booking-success", booking_id=booking.id)
+
+            else:
+                error_msg = data.get("ResponseDescription", "Unknown error")
+                if request.headers.get("x-requested-with") == "XMLHttpRequest":
+                    return JsonResponse({"status": "failed", "message": error_msg}, status=400)
+
+                messages.error(request, f"❌ Payment initiation failed: {error_msg}")
+                return render(request, self.template_name, {"booking": booking, "phone": phone, "amount": amount})
+
+        except Exception as e:
+            if request.headers.get("x-requested-with") == "XMLHttpRequest":
+                return JsonResponse({"status": "error", "message": str(e)}, status=500)
+
+            messages.error(request, f"Input phone number with the correct format: {str(e)}")
+            return render(request, self.template_name, {"booking": booking, "phone": phone, "amount": amount})
+@require_GET
+def check_payment_status(request, payment_id):
+    payment = get_object_or_404(Payment, id=payment_id)
+    return JsonResponse({
+        "success": payment.status == "success",
+        "status": payment.status
+    })
+
+@csrf_exempt
+def mpesa_callback(request):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            print("M-Pesa Callback Data:", data)
+
+            # Extract CheckoutID and result
+            body = data.get("Body", {}).get("stkCallback", {})
+            checkout_id = body.get("CheckoutRequestID")
+            result_code = body.get("ResultCode")
+            result_desc = body.get("ResultDesc")
+
+            # Find the payment linked to this checkout
+            payment = Payment.objects.filter(checkout_id=checkout_id).first()
+
+            if not payment:
+                return JsonResponse({"ResultCode": 1, "ResultDesc": "Payment not found"})
+
+            # Update payment based on M-Pesa response
+            if result_code == 0:
+                # Success: extract metadata
+                metadata = body.get("CallbackMetadata", {}).get("Item", [])
+                mpesa_receipt = next((item["Value"] for item in metadata if item["Name"] == "MpesaReceiptNumber"), None)
+                phone_number = next((item["Value"] for item in metadata if item["Name"] == "PhoneNumber"), None)
+                name = next((item["Value"] for item in metadata if item["Name"] == "Name"), None)
+
+                payment.transaction_id = mpesa_receipt
+                payment.phone_number = phone_number or payment.phone_number
+                payment.mpesa_name = name
+                payment.status = "successful"
+                payment.save()
+
+            else:
+                payment.status = "failed"
+                payment.description = result_desc
+                payment.save()
+
+            return JsonResponse({"ResultCode": 0, "ResultDesc": "Callback processed successfully"})
+
+        except Exception as e:
+            return JsonResponse({"ResultCode": 1, "ResultDesc": str(e)})
+
+    return JsonResponse({"ResultCode": 1, "ResultDesc": "Invalid request"})
+
+def confirm_payment(request, booking_id):
+    booking = get_object_or_404(Booking, id=booking_id)
+    payment = Payment.objects.filter(booking=booking).last()
+
+    return render(request, "confirm_payment.html", {
+        "booking": booking,
+        "payment": payment,
+    })
+
+
+def payment_status(request, checkout_id):
+    try:
+        payment = Payment.objects.get(checkout_id=checkout_id)
+        return JsonResponse({"status": payment.status, "transaction_id": payment.transaction_id})
+    except Payment.DoesNotExist:
+        return JsonResponse({"status": "not_found"})
+
+
+
+
+
+

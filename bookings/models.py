@@ -66,3 +66,29 @@ class Prescription(models.Model):
 
     class Meta:
         ordering = ["-created_at"]
+
+class Payment(models.Model):
+    booking = models.ForeignKey("Booking", on_delete=models.CASCADE, related_name="payments")
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    transaction_id = models.CharField(max_length=100, blank=True, null=True)
+    mpesa_name = models.CharField(max_length=255, blank=True, null=True)  # Name from M-Pesa SMS
+    phone_number = models.CharField(max_length=20)
+    # mpesa_name = models.CharField(max_length=100, blank=True, null=True)
+    checkout_id = models.CharField(max_length=256)
+    description = models.TextField(blank=True, null=True)
+    status = models.CharField(
+        max_length=20,
+        choices=[
+            ("pending", "Pending"),
+            ("successful", "Successful"),
+            ("failed", "Failed"),
+            ("cancelled", "Cancelled"),
+            ("unknown", "Unknown"),
+        ],
+        default="pending"
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.mpesa_name} - {self.transaction_id}"
+

@@ -35,10 +35,13 @@
 {#                    </ul>#}
                     <a href="{% url 'doctors:list' %}">Doctors</a>
                 </li>
-                {% if not user.is_authenticated %}
-                    <li class="login-link">
-                        <a href="{% url 'accounts:login' %}">Login / Signup</a>
-                    </li>
+<!--                {% if not user.is_authenticated %}-->
+<!--            <li class="nav-item d-flex gap-2">-->
+<!--    <a class="btn btn-outline-primary" href="{% url 'accounts:login' %}">Login</a>-->
+<!--    <a class="btn btn-primary" href="{% url 'accounts:doctor-register' %}">Doctor Signup</a>-->
+<!--    <a class="btn btn-secondary" href="{% url 'accounts:patient-register' %}">Patient Signup</a>-->
+<!--</li>-->
+
                 {% elif user.role == 'patient' %}
                     <li class="has-submenu {% if request.path == '/patients/' %} active {% endif %}">
                         <a href="#">Patients <i class="fas fa-chevron-down"></i></a>
@@ -62,9 +65,15 @@
                 </div>
             </li>
             {% if not user.is_authenticated %}
-                <li class="nav-item">
-                    <a class="nav-link header-login" href="{% url 'accounts:login' %}">Login / Signup </a>
-                </li>
+<li class="nav-item" style="margin-left: 1rem;">
+  <div style="display: flex; gap: 0.75rem;">
+    <a class="btn  btn-outline-primary" href="{% url 'accounts:login' %}">Login</a>
+    <a class="btn   btn-primary"
+       href="{% url 'accounts:doctor-register' %}">Signup</a>
+  </div>
+</li>
+
+
             {% else %}
                 <!-- User Menu -->
                 <li class="nav-item dropdown has-arrow logged-item">

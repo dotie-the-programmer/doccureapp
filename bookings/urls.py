@@ -1,10 +1,14 @@
 from django.urls import path
 
+from . import views
 from .views import (
     BookingView,
     BookingCreateView,
     BookingSuccessView,
     BookingInvoiceView,
+    BookingPaymentView,
+    mpesa_callback,
+
 )
 
 app_name = "bookings"
@@ -30,4 +34,21 @@ urlpatterns = [
         BookingInvoiceView.as_view(),
         name="booking-invoice",
     ),
+
+    path("confirm-payment/", views.confirm_payment, name="confirm_payment"),
+
+    path(
+    "pay/<int:booking_id>/",
+    BookingPaymentView.as_view(),
+    name="booking-payment"
+   ),
+
+    path(
+        "mpesa/callback/",
+         mpesa_callback,
+        name="mpesa_callback"),
+    
+    
+
+
 ]

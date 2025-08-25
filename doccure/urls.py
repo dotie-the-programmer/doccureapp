@@ -1,4 +1,4 @@
-import debug_toolbar
+# import debug_toolbar
 from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
@@ -34,7 +34,7 @@ urlpatterns = (
         path("doctors/", include("doctors.urls")),
         path("bookings/", include("bookings.urls")),
         path("", include("core.urls")),
-        path("__debug__/", include(debug_toolbar.urls)),
+        # path("__debug__/", include(debug_toolbar.urls)),
         path("ckeditor/", include("ckeditor_uploader.urls")),
         path(
             "admin/",

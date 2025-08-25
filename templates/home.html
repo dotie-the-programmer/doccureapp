@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-
 {% load static %}
 
 {% block title %}
@@ -8,208 +7,214 @@
 
 {% block content %}
 
-    <!-- Home Banner -->
-    <section class="section section-search">
-        <div class="container-fluid">
-            <div class="banner-wrapper">
-                <div class="banner-header text-center">
-                    <h1>Your Health is our Priority!</h1>
-                    <p>Get instant access to trusted doctors in your area for quality healthcare.</p>
-                </div>
+<!-- Home Banner -->
+<section class="py-5 text-dark" style="background-color: #f8f9fa;">
 
-                <!-- Search -->
-                <div class="search-box">
-                    <form action="{% url 'doctors:list' %}" method="get">
-                        <div class="form-group search-location">
-                            <input type="text" name="location" class="form-control" placeholder="Enter City or Division">
-                            <span class="form-text">Find doctors in your area</span>
-                        </div>
-                        <div class="form-group search-info">
-                            <input type="text" name="q" class="form-control" placeholder="Search by Doctor Name, Specialization, or Symptoms">
-                            <span class="form-text">e.g. Cardiologist, Heart Problems, Dr. Cherono</span>
-                        </div>
-                        <button type="submit" class="btn btn-primary search-btn"><i class="fas fa-search"></i> <span>Search</span></button>
-                    </form>
-                </div>
-                <!-- /Search -->
+    <div class="container">
+        <div class="text-center mb-4">
+            <h1 class="display-5 fw-bold text-white py-2 px-3" style="background-color: #09e6ab;">
+  Your Well-being, Our Commitment!
+</h1>
 
-            </div>
+            <p class="lead">Discover top-rated doctors near you — fast, reliable, and always here for you.</p>
         </div>
-    </section>
-    <!-- /Home Banner -->
 
-    <!-- Clinic and Specialities -->
-    <section class="section section-specialities">
-        <div class="container-fluid">
-            <div class="section-header text-center">
-                <h2>Medical Specialities</h2>
-                <p class="sub-title">Find specialized doctors across major medical fields to address your specific health needs</p>
+        <!-- Search -->
+        <form action="{% url 'doctors:list' %}" method="get" class="row g-3 justify-content-center">
+            <div class="col-md-4">
+                <input type="text" name="location" class="form-control form-control-lg rounded-3" placeholder="Enter City or County">
+                <small class="form-text text-light">Find doctors in your area</small>
             </div>
-            <div class="row justify-content-center">
-                <div class="col-md-9">
-                    <!-- Slider -->
-                    <div class="specialities-slider slider">
+            <div class="col-md-5">
+                <input type="text" name="q" class="form-control form-control-lg rounded-3" placeholder="Search by Doctor Name, Specialization, or Symptoms">
+                <small class="form-text text-light">e.g. Cardiologist, Heart Problems, Dr. Cherono</small>
+            </div>
+            <div class="col-md-2 d-grid">
+                <button type="submit" class="btn btn-light fw-bold text-white btn-lg rounded-3" style="background-color: #09e6ab;">
+                    <i class="fas fa-search me-1"></i> Search
+                </button>
+            </div>
+        </form>
+        <!-- /Search -->
+    </div>
+</section>
+<!-- /Home Banner -->
 
-                        <!-- Slider Item -->
-                        <div class="speicality-item text-center">
-                            <div class="speicality-img">
-                                <img src="{% static 'assets/img/specialities/specialities-01.png' %}" class="img-fluid" alt="Cardiology">
-                                <span><i class="fa fa-circle" aria-hidden="true"></i></span>
-                            </div>
-                            <p>Cardiology</p>
+<!-- Medical Specialities -->
+<section class="py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Medical Specialities</h2>
+            <p class="text-muted">Find specialized doctors across major medical fields to address your specific health needs</p>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <div class="d-flex flex-row flex-nowrap overflow-auto gap-5 pb-2 px-2">
+                    {% for i in "12345" %}
+                    <div class="text-center flex-shrink-0 mx-3">
+                        <div class="p-4 bg-white shadow rounded-circle mb-2 position-relative">
+                            <img src="{% static 'assets/img/specialities/specialities-0' %}{{ i }}.png" alt="Speciality" class="img-fluid" style="width:80px;">
+                            <span class="position-absolute bottom-0 end-0 translate-middle p-1 bg-success border border-light rounded-circle">
+                                <i class="fa fa-circle text-white" aria-hidden="true"></i>
+                            </span>
                         </div>
-                        <!-- /Slider Item -->
-
-                        <!-- Slider Item -->
-                        <div class="speicality-item text-center">
-                            <div class="speicality-img">
-                                <img src="{% static 'assets/img/specialities/specialities-02.png' %}" class="img-fluid" alt="Neurology">
-                                <span><i class="fa fa-circle" aria-hidden="true"></i></span>
-                            </div>
-                            <p>Neurology</p>
-                        </div>
-                        <!-- /Slider Item -->
-
-                        <!-- Slider Item -->
-                        <div class="speicality-item text-center">
-                            <div class="speicality-img">
-                                <img src="{% static 'assets/img/specialities/specialities-03.png' %}" class="img-fluid" alt="Orthopedics">
-                                <span><i class="fa fa-circle" aria-hidden="true"></i></span>
-                            </div>
-                            <p>Orthopedics</p>
-                        </div>
-                        <!-- /Slider Item -->
-
-                        <!-- Slider Item -->
-                        <div class="speicality-item text-center">
-                            <div class="speicality-img">
-                                <img src="{% static 'assets/img/specialities/specialities-04.png' %}" class="img-fluid" alt="Pediatrics">
-                                <span><i class="fa fa-circle" aria-hidden="true"></i></span>
-                            </div>
-                            <p>Pediatrics</p>
-                        </div>
-                        <!-- /Slider Item -->
-
-                        <!-- Slider Item -->
-                        <div class="speicality-item text-center">
-                            <div class="speicality-img">
-                                <img src="{% static 'assets/img/specialities/specialities-05.png' %}" class="img-fluid" alt="Dentistry">
-                                <span><i class="fa fa-circle" aria-hidden="true"></i></span>
-                            </div>
-                            <p>Dentistry</p>
-                        </div>
-                        <!-- /Slider Item -->
-
+                        <p class="fw-semibold">
+                            {% if i == "1" %}Cardiology{% elif i == "2" %}Neurology{% elif i == "3" %}Orthopedics{% elif i == "4" %}Pediatrics{% else %}Dentistry{% endif %}
+                        </p>
                     </div>
-                    <!-- /Slider -->
-
+                    {% endfor %}
                 </div>
             </div>
         </div>
-    </section>
-    <!-- Clinic and Specialities -->
+    </div>
+</section>
+<!-- /Medical Specialities -->
 
-    <!-- Popular Section -->
-    <section class="section section-doctor">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-lg-4">
-                    <div class="section-header">
-                        <h2>Book Appointments Online</h2>
-                        <p>Connect with Expert Healthcare Professionals</p>
-                    </div>
-                    <div class="about-content">
-                        <p>Access quality healthcare from the comfort of your home. Our platform connects you with experienced doctors who provide personalized medical consultations.</p>
-                        <p>Choose from a wide network of verified specialists, check their availability in real-time, and book appointments instantly. We're committed to making healthcare accessible and convenient for everyone in Kenya.</p>
-                        <a href="{% url 'doctors:list' %}">View all doctors</a>
-                    </div>
-                </div>
-                <div class="col-lg-8">
-                    <div class="doctor-slider slider">
+<!-- Popular Section -->
+<section class="py-5 bg-light border-top border-bottom">
+    <div class="container">
+        <div class="row align-items-center mb-5">
+            <div class="col-lg-5 mb-4 mb-lg-0">
+                <h2 class="fw-bold mb-3">Book Appointments Online</h2>
+                <p class="mb-3">Access quality healthcare from the comfort of your home. Our platform connects you with experienced doctors who provide personalized medical consultations.</p>
+                <p class="mb-4">Choose from a wide network of verified specialists, check their availability in real-time, and book appointments instantly. We're committed to making healthcare accessible and convenient for everyone in Kenya.</p>
+                <a href="{% url 'doctors:list' %}" class="btn btn-outline-primary">View all doctors</a>
+            </div>
+            <div class="col-12 col-lg-7">
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 align-items-stretch justify-content-center">
+    {% for doctor in doctors %}
+      {% if doctor.username %}
+      <div class="col doctor-card-wrapper {% if forloop.counter > 3 %}d-none{% endif %}">
+        <div class="card h-100 shadow-sm border-0 rounded-4 doctor-card">
+          <div class="position-relative">
+            <a href="{% url 'doctors:doctor-profile' doctor.username %}">
+              <img src="{{ doctor.profile.image }}" class="card-img-top doctor-img" alt="Doctor Image">
+            </a>
+            <a href="javascript:void(0)" class="position-absolute top-0 end-0 p-2 text-danger">
+              <i class="far fa-bookmark"></i>
+            </a>
+          </div>
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title mb-0">
+              <a href="{% url 'doctors:doctor-profile' doctor.username %}" class="text-decoration-none text-dark">
+                Dr. {{ doctor.get_full_name }}
+              </a>
+              <i class="fas fa-check-circle text-success small"></i>
+            </h5>
+            <p class="text-muted small">{{ doctor.profile.specialization }}</p>
+            <p class="text-primary fw-semibold">Ksh {{ doctor.profile.price_per_consultation }}</p>
+            <div class="mt-auto d-flex gap-2">
+              <a href="{% url 'doctors:doctor-profile' doctor.username %}" class="btn btn-sm btn-outline-secondary w-50">View Profile</a>
+              <a href="{% url 'bookings:doctor-booking-view' doctor.username %}" class="btn btn-sm btn-primary w-50">Book Now</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+    {% endfor %}
+  </div>
 
-                        {% for doctor in doctors %}
-                            <!-- Doctor Widget -->
-                            <div class="profile-widget">
-                                <div class="doc-img">
-                                    <a href="{% url 'doctors:doctor-profile' doctor.username %}">
-                                        <img class="img-fluid" alt="Doctor Image" src="{{ doctor.profile.image }}">
-                                    </a>
-                                    <a href="javascript:void(0)" class="fav-btn">
-                                        <i class="far fa-bookmark"></i>
-                                    </a>
-                                </div>
-                                <div class="pro-content">
-                                    <h3 class="title">
-                                        <a href="{% url 'doctors:doctor-profile' doctor.username %}">Dr. {{ doctor.get_full_name }}</a>
-                                        <i class="fas fa-check-circle verified"></i>
-                                    </h3>
-                                    <p class="speciality">{{ doctor.profile.specialization }}</p>
-                                    <ul cla{{ doctor.profile.price_per_consultation }}
-                                            <i class="fas fa-info-circle" data-toggle="tooltip" title="Consultation Fee"></i>
-                                        </li>
-                                    </ul>
-                                    <div class="row row-sm">
-                                        <div class="col-6">
-                                            <a href="{% url 'doctors:doctor-profile' doctor.username %}" class="btn view-btn">View Profile</a>
-                                        </div>
-                                        <div class="col-6">
-                                            <a href="{% url 'bookings:doctor-booking-view' doctor.username %}" class="btn book-btn">Book Now</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- /Doctor Widget -->
-                        {% endfor %}
+  <!-- Show More Button -->
+  {% if doctors|length > 3 %}
+  <div class="text-center mt-4">
+    <button id="showMoreBtn" class="btn btn-primary">Show More</button>
+  </div>
+  {% endif %}
+</div>
 
-                    </div>
-                </div>
             </div>
         </div>
-    </section>
-    <!-- /Popular Section -->
+    </div>
+</section>
+<!-- /Popular Section -->
 
-    <!-- Features Section -->
-    <section class="section section-features">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-4 features-img">
-                    <img src="{% static 'assets/img/features/feature.png' %}" class="img-fluid" alt="Feature">
-                </div>
-                <div class="col-md-8">
-                    <div class="section-header">
-                        <h2 class="mt-2">Why choose DocCure?</h2>
-                        <p>We provide comprehensive healthcare solutions with a focus on quality and accessibility</p>
-                    </div>
-                    <div class="features-slider slider">
-                        <div class="feature-item text-center">
-                            <img src="{% static 'assets/img/features/feature-01.jpg' %}" class="img-fluid" alt="Verified Doctors">
-                            <p>Verified Doctors</p>
-                        </div>
+<!-- Features Section -->
+<section class="py-5 bg-light position-relative">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h3 class="fw-bold mb-0">Why Choose Us?</h3>
+      <div class="d-flex gap-2">
+        <button class="btn btn-primary btn-sm" id="scrollLeftBtn">←</button>
+        <button class="btn btn-primary btn-sm" id="scrollRightBtn">→</button>
+      </div>
+    </div>
 
-                        <div class="feature-item text-center">
-                            <img src="{% static 'assets/img/features/feature-02.jpg' %}" class="img-fluid" alt="Easy Booking">
-                            <p>Easy Booking</p>
-                        </div>
+    <div class="features-slider d-flex flex-nowrap overflow-auto gap-4 pb-2" id="featuresContainer">
+      {% for i in "12345" %}
+      <div class="feature-item text-center flex-shrink-0">
+        <img src="{% static 'assets/img/features/feature-0' %}{{ i }}.jpg" class="img-fluid rounded-circle mb-2 shadow-sm" alt="Feature" style="width: 100px;">
+        <p class="small text-muted">
+          {% if i == "1" %}Verified Doctors{% elif i == "2" %}Easy Booking{% elif i == "3" %}Digital Records{% elif i == "4" %}Instant Access{% else %}Secure Platform{% endif %}
+        </p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
 
-                        <div class="feature-item text-center">
-                            <img src="{% static 'assets/img/features/feature-03.jpg' %}" class="img-fluid" alt="Digital Records">
-                            <p>Digital Records</p>
-                        </div>
+<!-- Scroll Controls & Card Hover Styling -->
+<style>
+    .doctor-img {
+  height: 200px;
+  object-fit: cover;
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+}
 
-                        <div class="feature-item text-center">
-                            <img src="{% static 'assets/img/features/feature-04.jpg' %}" class="img-fluid" alt="Instant Access">
-                            <p>Instant Access</p>
-                        </div>
+  .doctor-card:hover {
+    transform: translateY(-5px);
+    transition: transform 0.3s ease;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+  }
 
-                        <div class="feature-item text-center">
-                            <img src="{% static 'assets/img/features/feature-05.jpg' %}" class="img-fluid" alt="Secure Platform">
-                            <p>Secure Platform</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- /Features Section -->
+  #scrollLeftBtn, #scrollRightBtn {
+    padding: 6px 12px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+  }
+
+  #scrollLeftBtn:hover, #scrollRightBtn:hover {
+    background-color: #0056b3;
+    color: #fff;
+  }
+
+  .features-slider::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  .features-slider::-webkit-scrollbar-thumb {
+    background-color: #007bff;
+    border-radius: 4px;
+  }
+</style>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const showMoreBtn = document.getElementById("showMoreBtn");
+  if (showMoreBtn) {
+    showMoreBtn.addEventListener("click", function() {
+      document.querySelectorAll(".doctor-card-wrapper.d-none").forEach(card => {
+        card.classList.remove("d-none");
+      });
+      showMoreBtn.style.display = "none"; // hide button after revealing
+    });
+  }
+});
+</script>
+
+
+<!-- Scroll Buttons JS -->
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const container = document.getElementById("featuresContainer");
+    document.getElementById("scrollLeftBtn").addEventListener("click", () => {
+      container.scrollBy({ left: -200, behavior: 'smooth' });
+    });
+    document.getElementById("scrollRightBtn").addEventListener("click", () => {
+      container.scrollBy({ left: 200, behavior: 'smooth' });
+    });
+  });
+</script>
 
 {% endblock %}

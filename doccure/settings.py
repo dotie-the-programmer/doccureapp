@@ -6,7 +6,7 @@ SECRET_KEY = "g!y0otek@9t^b+b*7)&q2a5^=8_9&xcdii8@6h^_*wphl-(fu9"
 
 DEBUG = True
 
-ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
+ALLOWED_HOSTS = ["127.0.0.1", "localhost", "8f8264a36109.ngrok-free.app"]
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -15,7 +15,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "debug_toolbar",
+    # "debug_toolbar",
     "rest_framework",
     "core",
     "accounts",
@@ -33,7 +33,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "debug_toolbar.middleware.DebugToolbarMiddleware",
+    # "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
 ROOT_URLCONF = "doccure.urls"
@@ -58,11 +58,28 @@ WSGI_APPLICATION = "doccure.wsgi.application"
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',  # Use SQLite backend
-        'NAME': BASE_DIR / 'db.sqlite3',  # SQLite database file
-
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'doccure_db',          # Your MySQL database name
+        'USER': 'root',                # Default MySQL user in XAMPP
+        'PASSWORD': '',                # Leave blank if no password is set
+        'HOST': '127.0.0.1',           # or 'localhost'
+        'PORT': '3306',                # Default MySQL port
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+        },
     }
 }
+
+
+
+
+
+
+
+
+
+
+
 
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -136,8 +153,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'dorothycherono951@gmail.com'  # Replace with your email
-EMAIL_HOST_PASSWORD = 'mwlu wxiy kdrn yvpi'  # Use an App Password if using Gmail
+EMAIL_HOST_USER = 'dorothycherono951@gmail.com'
+EMAIL_HOST_PASSWORD = 'mpwmliqvbvppdzai'
 
 # M-Pesa Daraja Sandbox Settings
 MPESA_CONSUMER_KEY = 'zQk3fcF1GvyXFkQ7AfyIVf8jg23EWtda7kUDzOWrWhSzpcpl'

@@ -28,11 +28,14 @@ class User(AbstractUser):
         error_messages={"required": "Role must be provided"},
     )
     email = models.EmailField(
-        blank=True,
+        unique=True,
+        blank=False,
         error_messages={
             "unique": "A user with that email already exists.",
+            "blank": "Email field is required.",
         },
     )
+
     first_name = models.CharField(max_length=150, blank=True)
     last_name = models.CharField(max_length=150, blank=True)
     registration_number = models.IntegerField(null=True, blank=True)

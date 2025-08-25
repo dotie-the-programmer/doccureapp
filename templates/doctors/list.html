@@ -28,12 +28,12 @@
                         <span class="sort-title">Sort by</span>
                         <span class="sortby-fliter">
                             <select class="select" name="sort" onchange="updateSort(this.value)">
-                                <option value="">Select</option>
-                                {% comment %} <option value="rating" {% if request.GET.sort == 'rating' %}selected{% endif %}>Rating</option> {% endcomment %}
-                                <option value="price_low" {% if request.GET.sort == 'price_low' %}selected{% endif %}>Price - Low to High</option>
-                                <option value="price_high" {% if request.GET.sort == 'price_high' %}selected{% endif %}>Price - High to Low</option>
-                                <option value="experience" {% if request.GET.sort == 'experience' %}selected{% endif %}>Experience</option>
+                                 <option value="">Select</option>
+                                 <option value="price_low" {% if request.GET.sort == "price_low" %}selected{% endif %}>Price - Low to High</option>
+                                 <option value="price_high" {% if request.GET.sort == "price_high" %}selected{% endif %}>Price - High to Low</option>
+                                 <option value="experience" {% if request.GET.sort == "experience" %}selected{% endif %}>Experience</option>
                             </select>
+
                         </span>
                     </div>
                 </div>
@@ -97,13 +97,23 @@
                                     <div class="doctor-widget">
                                         <div class="doc-info-left">
                                             <div class="doctor-img">
-                                                <a href="{% url 'doctors:doctor-profile' doctor.username %}">
+                                                {% if doctor.username %}
+                                                   <a href="{% url 'doctors:doctor-profile' doctor.username %}">Dr. {{ doctor.get_full_name }}</a>
+                                                {% else %}
+                                                   <span>Dr. {{ doctor.get_full_name }}</span>
+                                                {% endif %}
+
                                                     <img src="{{ doctor.profile.image }}" class="img-fluid" alt="{{ doctor.get_full_name }}">
                                                 </a>
                                             </div>
                                             <div class="doc-info-cont">
                                                 <h4 class="doc-name">
-                                                    <a href="{% url 'doctors:doctor-profile' doctor.username %}">Dr. {{ doctor.get_full_name }}</a>
+                                                    {% if doctor.username %}
+                                                        <a href="{% url 'doctors:doctor-profile' doctor.username %}">Dr. {{ doctor.get_full_name }}</a>
+                                                    {% else %}
+                                                        <a href="#" onclick="alert('Doctor profile unavailable')">Dr. {{ doctor.get_full_name }}</a>
+                                                    {% endif %}
+
                                                 </h4>
                                                 <p class="doc-speciality">{{ doctor.profile.specialization }}</p>
                                                 <div class="rating">
@@ -128,8 +138,14 @@
                                                 </ul>
                                             </div>
                                             <div class="clinic-booking">
-                                                <a class="view-pro-btn" href="{% url 'doctors:doctor-profile' doctor.username %}">View Profile</a>
-                                                <a class="apt-btn" href="{% url 'bookings:doctor-booking-view' doctor.username %}">Book Appointment</a>
+                                                {% if doctor.username %}
+                                                    <a class="view-pro-btn" href="{% url 'doctors:doctor-profile' doctor.username %}">View Profile</a>
+                                                    <a class="apt-btn" href="{% url 'bookings:doctor-booking-view' doctor.username %}">Book Appointment</a>
+                                                {% else %}
+                                                    <span class="btn btn-secondary disabled">View Profile</span>
+                                                    <span class="btn btn-secondary disabled">Book Appointment</span>
+                                                {% endif %}
+
                                             </div>
                                         </div>
                                     </div>

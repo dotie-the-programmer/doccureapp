@@ -13,55 +13,28 @@ class DoctorRegistrationForm(UserCreationForm):
         self.fields["password1"].label = "Password"
         self.fields["password2"].label = "Confirm your password"
 
-        self.fields["first_name"].widget.attrs.update(
-            {
-                "placeholder": "Enter first name",
-            }
-        )
-        self.fields["last_name"].widget.attrs.update(
-            {
-                "placeholder": "Enter last name",
-            }
-        )
-        self.fields["email"].widget.attrs.update(
-            {
-                "placeholder": "Enter email",
-            }
-        )
-        self.fields["password1"].widget.attrs.update(
-            {
-                "placeholder": "Enter password",
-            }
-        )
-        self.fields["password2"].widget.attrs.update(
-            {
-                "placeholder": "Confirm your password",
-            }
-        )
+        self.fields["first_name"].widget.attrs.update({"placeholder": "Enter first name"})
+        self.fields["last_name"].widget.attrs.update({"placeholder": "Enter last name"})
+        self.fields["email"].widget.attrs.update({"placeholder": "Enter email"})
+        self.fields["username"].widget.attrs.update({"placeholder": "Enter username"})
+        self.fields["password1"].widget.attrs.update({"placeholder": "Enter password"})
+        self.fields["password2"].widget.attrs.update({"placeholder": "Confirm your password"})
 
     class Meta:
         model = User
         fields = [
             "first_name",
             "last_name",
+            "username",
             "email",
             "password1",
             "password2",
         ]
-        error_messages = {
-            "first_name": {
-                "required": "First name is required",
-                "max_length": "Name is too long",
-            },
-            "last_name": {
-                "required": "Last name is required",
-                "max_length": "Last Name is too long",
-            },
-        }
 
     def save(self, commit=True):
-        user = super(UserCreationForm, self).save(commit=False)
-        user.role = "doctor"
+        user = super().save(commit=False)
+        user.email = self.cleaned_data["email"]
+        user.role = "doctor"  # ✅ Set doctor role
         if commit:
             user.save()
         return user
@@ -70,12 +43,14 @@ class DoctorRegistrationForm(UserCreationForm):
 class PatientRegistrationForm(UserCreationForm):
     first_name = forms.CharField(required=True)
     last_name = forms.CharField(required=True)
+    email = forms.EmailField(required=True)
 
     class Meta:
         model = User
         fields = [
             "first_name",
             "last_name",
+            "email",
             "username",
             "password1",
             "password2",
@@ -83,6 +58,7 @@ class PatientRegistrationForm(UserCreationForm):
 
     def save(self, commit=True):
         user = super(UserCreationForm, self).save(commit=False)
+        user.email = self.cleaned_data["email"]
         user.role = "patient"
         if commit:
             user.save()

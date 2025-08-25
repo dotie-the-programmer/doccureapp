@@ -43,7 +43,7 @@ class PatientProfileUpdateView(PatientRequiredMixin, UpdateView):
 
         # Handle profile image upload
         if self.request.FILES.get("avatar"):
-            profile.image = self.request.FILES["avatar"]
+            profile.avatar = self.request.FILES["avatar"]
 
         # Update profile fields
         profile_fields = [

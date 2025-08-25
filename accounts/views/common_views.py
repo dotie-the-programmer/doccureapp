@@ -19,26 +19,20 @@ from django.urls import reverse_lazy
 
 from doccure import settings
 
-
 class CustomPasswordResetView(PasswordResetView):
     template_name = "auth/password_reset.html"
     email_template_name = "auth/password_reset_email.html"
-    subject_template_name = "auth/password_reset_subject.txt"
-    success_url = reverse_lazy("password_reset_done")
-
+    success_url = reverse_lazy("accounts:password_reset_done")
 
 class CustomPasswordResetDoneView(PasswordResetDoneView):
     template_name = "auth/password_reset_done.html"
 
-
 class CustomPasswordResetConfirmView(PasswordResetConfirmView):
     template_name = "auth/password_reset_confirm.html"
-    success_url = reverse_lazy("password_reset_complete")
-
+    success_url = reverse_lazy("accounts:password_reset_complete")
 
 class CustomPasswordResetCompleteView(PasswordResetCompleteView):
     template_name = "auth/password_reset_complete.html"
-
 
 from accounts.forms import (
     DoctorRegistrationForm,
@@ -49,59 +43,50 @@ from accounts.models import User
 from accounts.serializers import BasicUserInformationSerializer
 from utils.htmx import render_toast_message_for_api
 
-
 class RegisterDoctorView(CreateView):
     model = User
     form_class = DoctorRegistrationForm
     template_name = "accounts/register.html"
     success_url = "/"
-
-    extra_context = {"title": "Register"}
+    extra_context = {"title": "Doctor Register"}
 
     def dispatch(self, request, *args, **kwargs):
         if self.request.user.is_authenticated:
             return HttpResponseRedirect(self.get_success_url())
-        return super().dispatch(self.request, *args, **kwargs)
+        return super().dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-
         form = self.form_class(data=request.POST)
-
         if form.is_valid():
-            user = form.save(commit=False)
+            self.object = form.save(commit=False)  # ✅ Fix added
             password = form.cleaned_data.get("password1")
-            user.set_password(password)
-            user.save()
+            self.object.set_password(password)
+            self.object.save()
             return redirect("accounts:login")
         else:
             return render(request, "accounts/register.html", {"form": form})
-
 
 class RegisterPatientView(CreateView):
     form_class = PatientRegistrationForm
     template_name = "accounts/register.html"
     success_url = "/"
-
-    extra_context = {"title": "Register"}
+    extra_context = {"title": "Patient Register"}
 
     def dispatch(self, request, *args, **kwargs):
         if self.request.user.is_authenticated:
             return HttpResponseRedirect(self.get_success_url())
-        return super().dispatch(self.request, *args, **kwargs)
+        return super().dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-
         form = self.form_class(data=request.POST)
-
         if form.is_valid():
-            user = form.save(commit=False)
+            self.object = form.save(commit=False)  # ✅ Fix added
             password = form.cleaned_data.get("password1")
-            user.set_password(password)
-            user.save()
+            self.object.set_password(password)
+            self.object.save()
             return redirect("accounts:login")
         else:
             return render(request, "accounts/register.html", {"form": form})
-
 
 class LoginView(FormView):
     """
@@ -111,13 +96,12 @@ class LoginView(FormView):
     success_url = "/"
     form_class = UserLoginForm
     template_name = "accounts/login.html"
-
     extra_context = {"title": "Login"}
 
     def dispatch(self, request, *args, **kwargs):
         if self.request.user.is_authenticated:
             return HttpResponseRedirect(self.get_success_url())
-        return super().dispatch(self.request, *args, **kwargs)
+        return super().dispatch(request, *args, **kwargs)
 
     def get_success_url(self):
         if "next" in self.request.GET and self.request.GET["next"] != "":
@@ -136,7 +120,6 @@ class LoginView(FormView):
         """If the form is invalid, render the invalid form."""
         return self.render_to_response(self.get_context_data(form=form))
 
-
 class LogoutView(RedirectView):
     """
     Provides users the ability to logout
@@ -148,7 +131,6 @@ class LogoutView(RedirectView):
         auth.logout(request)
         messages.success(request, "You are now logged out")
         return super(LogoutView, self).get(request, *args, **kwargs)
-
 
 class UpdateBasicUserInformationAPIView(LoginRequiredMixin, UpdateAPIView):
     serializer_class = BasicUserInformationSerializer
@@ -183,8 +165,3 @@ class UpdateBasicUserInformationAPIView(LoginRequiredMixin, UpdateAPIView):
             )
         except Exception as e:
             return render_toast_message_for_api("Error", str(e), "error")
-
-
-
-
-

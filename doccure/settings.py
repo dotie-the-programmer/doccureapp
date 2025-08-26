@@ -6,7 +6,7 @@ SECRET_KEY = "g!y0otek@9t^b+b*7)&q2a5^=8_9&xcdii8@6h^_*wphl-(fu9"
 
 DEBUG = os.environ.get("DEBUG", "True") == "True"
 
-ALLOWED_HOSTS = ["127.0.0.1", "localhost", "8f8264a36109.ngrok-free.app"]
+ALLOWED_HOSTS = ["127.0.0.1", "localhost", "8f8264a36109.ngrok-free.app", "doccureapp.onrender.com"]
 
 INSTALLED_APPS = [
     "django.contrib.admin",

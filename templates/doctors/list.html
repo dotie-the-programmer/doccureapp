@@ -27,7 +27,8 @@
                     <div class="sort-by mr-5">
                         <span class="sort-title">Sort by</span>
                         <span class="sortby-fliter">
-                            <select class="select" name="sort" onchange="updateSort(this.value)">
+                            <label for="sort-select" class="sr-only">Sort by</label>
+                            <select id="sort-select" class="select" name="sort" onchange="updateSort(this.value)">
                                  <option value="">Select</option>
                                  <option value="price_low" {% if request.GET.sort == "price_low" %}selected{% endif %}>Price - Low to High</option>
                                  <option value="price_high" {% if request.GET.sort == "price_high" %}selected{% endif %}>Price - High to Low</option>

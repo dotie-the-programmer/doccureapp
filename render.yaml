@@ -1,0 +1,24 @@
+databases:
+  - name: doccure_db
+    databaseName: doccure_db
+    user: doccure
+
+services:
+  - name: doccure
+    type: web
+    env: python
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn --bind"
+    envVars:
+      -key: DATABASE_URL
+      fromDatabase:
+        name: doccure_db
+        property: connectionString
+      -key: SECRET_KEY
+       generateValue:true
+      -key: DEBUG
+        value:"False"
+        -key:WEB_CONCURRENCY
+        value:4
+          
+   

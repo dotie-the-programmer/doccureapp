@@ -1,10 +1,10 @@
 from pathlib import Path
-
+import os
+import dj_database_url
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 SECRET_KEY = "g!y0otek@9t^b+b*7)&q2a5^=8_9&xcdii8@6h^_*wphl-(fu9"
 
-DEBUG = True
+DEBUG = os.environ.get("DEBUG", "True") == "True"
 
 ALLOWED_HOSTS = ["127.0.0.1", "localhost", "8f8264a36109.ngrok-free.app"]
 
@@ -27,6 +27,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -56,31 +57,24 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "doccure.wsgi.application"
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'doccure_db',          # Your MySQL database name
-        'USER': 'root',                # Default MySQL user in XAMPP
-        'PASSWORD': '',                # Leave blank if no password is set
-        'HOST': '127.0.0.1',           # or 'localhost'
-        'PORT': '3306',                # Default MySQL port
-        'OPTIONS': {
-            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
-        },
+if os.environ.get("DATABASE_URL"):
+    DATABASES = {
+        'default': dj_database_url.parse(os.environ.get("DATABASE_URL"))
     }
-}
-
-
-
-
-
-
-
-
-
-
-
-
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'doccure_db',          # Your MySQL database name
+            'USER': 'root',                # Default MySQL user in XAMPP
+            'PASSWORD': '',                # Leave blank if no password is set
+            'HOST': '127.0.0.1',           # or 'localhost'
+            'PORT': '3306',                # Default MySQL port
+            'OPTIONS': {
+                'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+            },
+        }
+    }
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -96,6 +90,11 @@ AUTH_PASSWORD_VALIDATORS = [
     #     'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     # },
 ]
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+WHITENOISE_USE_FINDERS = True
+WHITENOISE_AUTOREFRESH = False 
+WHITENOISE_SKIP_COMPRESS_EXTENSIONS = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'zip', 'gz', 'tgz', 'bz2', 'tbz', 'xz', 'br']
 
 LANGUAGE_CODE = "en-us"
 

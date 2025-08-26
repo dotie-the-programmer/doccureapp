@@ -8,7 +8,7 @@ services:
     type: web
     env: python
     buildCommand: "./build.sh"
-    startCommand: "gunicorn --bind"
+    startCommand: "gunicorn doccure.wsgi:application"
     envVars:
       -key: DATABASE_URL
       fromDatabase:

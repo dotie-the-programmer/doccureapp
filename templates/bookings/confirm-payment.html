@@ -1,24 +1,26 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="container mt-5">
-    <h2 class="text-center text-success">Confirm Payment</h2>
+    <h2 class="text-center text-success">make payment</h2>
 
     <p><strong>Booking:</strong> {{ booking.id }}</p>
     <p><strong>Amount:</strong> Ksh {{ payment.amount }}</p>
-    <p><strong>Status:</strong> 
-        <span class="{% if payment.status == 'successful' %}text-success{% elif payment.status == 'failed' %}text-danger{% else %}text-warning{% endif %}">
+    <p><strong>Status:</strong>
+        <span
+            class="{% if payment.status == 'successful' %}text-success{% elif payment.status == 'failed' %}text-danger{% else %}text-warning{% endif %}">
             {{ payment.status|capfirst }}
         </span>
     </p>
 
-    {% if payment.status != "successful" %}
-        <form method="post" action="{% url 'start_payment' booking.id %}">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-primary">Pay Now</button>
-        </form>
+    {% if payment.status|lower != "successful" %}
+    <form method="post" action="{% url 'start_payment' booking.id %}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-primary">Pay Now</button>
+    </form>
     {% else %}
-        <p class="text-success fw-bold">Payment completed successfully!</p>
-        <a href="{% url 'dashboard' %}" class="btn btn-success">Go to Dashboard</a>
+    <p class="text-success fw-bold">Payment completed successfully!</p>
+    <a href="{% url 'dashboard' %}" class="btn btn-success">Go to Dashboard</a>
     {% endif %}
+
 </div>
 {% endblock %}
